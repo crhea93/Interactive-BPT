@@ -63,7 +63,7 @@ region_data = [
 
 # Initialize the Dash app
 app = dash.Dash(__name__)
-
+server = app.server
 image_data = fits.open('NGC1275_lowres_deep.fits')[0].data[200:1000, 1000:1500]
 image_data = np.arcsinh(image_data)
 '''fig, ax = plt.subplots(figsize=(8, 8))
