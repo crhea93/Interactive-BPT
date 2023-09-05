@@ -108,9 +108,13 @@ app.layout = html.Div([
 @app.callback(
     [Output('scatter-plot', 'figure'), Output('image-display', 'src'), Output('image-display', 'style')],
     [Input('plot-selector', 'value'), Input('image-dropdown', 'value'), Input('scatter-plot', 'hoverData')]
+    #[Output('scatter-plot', 'figure'), Output('image-display', 'style')],
+    #[Input('plot-selector', 'value'), Input('scatter-plot', 'hoverData')]
 )
 
 def update_scatter_plot(selected_plots, selected_image, hover_data):
+#def update_scatter_plot(selected_plots, hover_data):
+
     data = []
     rectangles = []
     for scatter, region in zip(scatter_data, region_data):
@@ -124,15 +128,15 @@ def update_scatter_plot(selected_plots, selected_image, hover_data):
             )
             data.append(scatter_trace)
             # Add rectangles for the selected scatter plot
-            #x_min = 3*min(region['x'])
-            #x_max = 3*max(region['x'])
-            #y_min = 3*min(region['y'])
-            #_max = 3*max(region['y'])
-            #rect = patches.Rectangle(
-        #        (x_min, y_min), x_max - x_min, y_max - y_min,
-        #        linewidth=2, edgecolor=scatter['color'], facecolor='none'
-    #        )
-            #rectangles.append(rect)
+            x_min = 3*min(region['x'])
+            x_max = 3*max(region['x'])
+            y_min = 3*min(region['y'])
+            y_max = 3*max(region['y'])
+            rect = patches.Rectangle(
+               (x_min, y_min), x_max - x_min, y_max - y_min,
+               linewidth=2, edgecolor=scatter['color'], facecolor='none'
+           )
+            rectangles.append(rect)
     layout = go.Layout(
         title='Interactive Scatter Plot Toggle',
         xaxis=dict(title='Log(<i>[NII]</i>/Hα)', tickformat='latex', showgrid=False, zeroline=False),
@@ -162,17 +166,20 @@ def update_scatter_plot(selected_plots, selected_image, hover_data):
     # Convert FITS image data to an image format (e.g., PNG) using matplotlib
     fig, ax = plt.subplots(figsize=(8, 8))
     # Read the selected image data using astropy
-    selected_image_path = image_paths[selected_image]
-
-    if selected_image == 0:
-        selected_image_data = fits.open(selected_image_path)[0].data[200:1000, 1000:1500]
-        selected_image_data = np.arcsinh(selected_image_data)
-    else:
-        selected_image_data = fits.open(selected_image_path)[0].data
-        selected_image_data = selected_image_data
+    # selected_image_path = image_paths[selected_image]
+    selected_image_path = 'NGC1275_lowres_deep.fits'
+    
+    selected_image_data = fits.open(selected_image_path)[0].data[200:1000, 1000:1500]
+    selected_image_data = np.arcsinh(selected_image_data)
+    #if selected_image == 0:
+    #    selected_image_data = fits.open(selected_image_path)[0].data[200:1000, 1000:1500]
+    #    selected_image_data = np.arcsinh(selected_image_data)
+    #else:
+    #    selected_image_data = fits.open(selected_image_path)[0].data
+    #    selected_image_data = selected_image_data
 
     #ax.imshow(selected_image_data, cmap='magma', origin='lower', vmin=np.nanpercentile(selected_image_data, 5), vmax=np.nanpercentile(selected_image_data, 99.5))
-    ax.imshow(selected_image_data, cmap='magma', origin='lower', vmin=np.nanpercentile(image_data, 5), vmax=np.nanpercentile(image_data, 99.5))  # Display the FITS image data as grayscale
+    ax.imshow(selected_image_data, cmap='magma', origin='lower', vmin=np.nanpercentile(image_data, 5), vmax=np.nanpercentile(image_data, 99))  # Display the FITS image data as grayscale
 
     for rect in rectangles:
         ax.add_patch(rect)
@@ -181,18 +188,18 @@ def update_scatter_plot(selected_plots, selected_image, hover_data):
     # Highlight the hovered pixel if available
     hover_style = {}
     #print(hover_data['points'][0]['x'])
-    if hover_data is not None:
-        x_hover = hover_data['points'][0]['x']
-        y_hover = hover_data['points'][0]['y']
-        hover_style = {
-            'position': 'absolute',
-            'left': f'{x_hover * 100}%',  # Convert normalized coordinates to percentage
-            'top': f'{(1 - y_hover) * 100}%',  # Convert normalized coordinates to percentage
-            'width': '10px',
-            'height': '10px',
-            'border': '2px solid red',
-            'box-sizing': 'border-box',
-        }
+    # if hover_data is not None:
+    #     x_hover = hover_data['points'][0]['x']
+    #     y_hover = hover_data['points'][0]['y']
+    #     hover_style = {
+    #         'position': 'absolute',
+    #         'left': f'{x_hover * 100}%',  # Convert normalized coordinates to percentage
+    #         'top': f'{(1 - y_hover) * 100}%',  # Convert normalized coordinates to percentage
+    #         'width': '10px',
+    #         'height': '10px',
+    #         'border': '2px solid red',
+    #         'box-sizing': 'border-box',
+    #     }
 
     # Save the converted image to a BytesIO object
     buf = BytesIO()
