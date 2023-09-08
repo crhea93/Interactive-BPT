@@ -55,7 +55,7 @@ scatter_data = [
     {'name': 'Horseshoe Knot', 'color': colors[2], 'x': np.log10(NII_Halpha[115:130,135:145].flatten()), 'y': Eq_width[115:130, 135:145].flatten()},
     {'name': 'Small Nothern Bar', 'color': colors[3], 'x': np.log10(NII_Halpha[80:90,140:175].flatten()), 'y': Eq_width[80:90,140:175].flatten()},
     {'name': 'Horseshoe Bottom', 'color': colors[4], 'x': np.log10(NII_Halpha[128:144,124:139].flatten()), 'y': Eq_width[128:144,124:139].flatten()},
-    {'name': 'Weird Bottom Right Thing', 'color': colors[5], 'x': np.log10(NII_Halpha[105:130, 15:35].flatten()), 'y': Eq_width[105:130, 15:35].flatten()},
+    {'name': 'Southern Claw', 'color': colors[5], 'x': np.log10(NII_Halpha[105:130, 15:35].flatten()), 'y': Eq_width[105:130, 15:35].flatten()},
     {'name': 'Large Northern Bar', 'color': colors[6], 'x': np.log10(NII_Halpha[95:110, 140:240].flatten()), 'y': Eq_width[95:110, 140:240].flatten()},
     {'name': 'Shock Front', 'color': colors[7], 'x': np.log10(front_NIIHalpha), 'y': front_eqwHa}
 ]
@@ -66,7 +66,7 @@ region_data = [
     {'name': 'Horseshoe Knot', 'color': colors[2], 'x': [115,130], 'y': [135,145]},
     {'name': 'Small Nothern Bar', 'color': colors[3], 'x': [80, 90], 'y': [140,175]},
     {'name': 'Horseshoe Bottom', 'color': colors[4], 'x': [128,144], 'y': [124,139]},
-    {'name': 'Weird Bottom Right Thing', 'color': colors[5], 'x': [105,130], 'y': [15,35]},
+    {'name': 'Southern Claw', 'color': colors[5], 'x': [105,130], 'y': [15,35]},
     {'name': 'Large Northern Bar', 'color': colors[6], 'x': [95,110], 'y': [140,240]},
     {'name': 'Shock Front', 'color': colors[7], 'x':[48, 82] , 'y': [101, 115]}
 ]

@@ -7,6 +7,7 @@ plt.style.use('./dark.mplstyle')
 
 def clean_flux(data_):
     flux = data_
+    flux[flux<1e-20] = np.nan
     return flux
 
 data_Halpha = clean_flux(fits.open('./NGC1275_3_Halpha_mask.fits')[0].data)
@@ -49,8 +50,8 @@ plt.scatter([val[0] for val in Liners], [val[1] for val in Liners], color='C1', 
 plt.scatter([val[0] for val in SF], [val[1] for val in SF], color='C2', alpha=0.3, label='Star-Forming')
 #plt.legend()
 plt.vlines(-0.4, 0.1, 1000, color = 'white', linewidth = 1)
-plt.hlines(6, -0.4, 1, color = 'white', linewidth = 1)
-plt.hlines(0.5, -1, 1,linestyle = 'dashed', color = 'white', linewidth = 1)
+plt.hlines(6, -0.4, 1.5, color = 'white', linewidth = 1)
+plt.hlines(0.5, -1, 1.5, linestyle = 'dashed', color = 'white', linewidth = 1)
 x_graph = np.linspace(-1, 1, 100 )
 plt.plot(x_graph, np.exp(-2.35*x_graph + np.log(0.5)), linestyle = 'dashed', color = 'white', linewidth = 1)
 
@@ -64,7 +65,7 @@ plt.xlabel('Log([NII]/H$\\alpha)$', fontsize = 13, weight = 'bold')
 
 plt.yscale('log')
 plt.ylim(.1, 1000)
-plt.xlim(-1, 1)
+plt.xlim(-1, 1.5)
 plt.savefig('ColorCodedBPT.png')
 plt.clf()
 
