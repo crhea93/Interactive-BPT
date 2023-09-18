@@ -1,1 +1,1 @@
-web: gunicorn interactiveBPT:server
+web: gunicorn app:server
