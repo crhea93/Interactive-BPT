@@ -45,11 +45,11 @@ front_eqwHa = profile_line(np.nan_to_num(Eq_width), (48,101), (82,115), linewidt
 scatter_data = [
     {'name': 'Central Region', 'color': colors[0], 'x': np.log10(NII_Halpha[45:115, 75:100].flatten()), 'y': Eq_width[45:115,75:100].flatten()},
     {'name': 'Star Forming Region', 'color': colors[1], 'x': np.log10(NII_Halpha[40:60,20:55].flatten()), 'y': Eq_width[40:60, 20:55].flatten()},
-    {'name': 'Horseshoe Knot', 'color': colors[2], 'x': np.log10(NII_Halpha[120:135,135:145].flatten()), 'y': Eq_width[115:130, 135:145].flatten()},
+    {'name': 'Horseshoe Knot', 'color': colors[2], 'x': np.log10(NII_Halpha[120:135,135:145].flatten()), 'y': Eq_width[120:135, 135:145].flatten()},
     {'name': 'Small Nothern Bar', 'color': colors[3], 'x': np.log10(NII_Halpha[80:90,140:175].flatten()), 'y': Eq_width[80:90,140:175].flatten()},
     {'name': 'Horseshoe Bottom', 'color': colors[4], 'x': np.log10(NII_Halpha[128:144,124:139].flatten()), 'y': Eq_width[128:144,124:139].flatten()},
-    {'name': 'Southern Claw', 'color': colors[5], 'x': np.log10(NII_Halpha[105:140, 15:45].flatten()), 'y': Eq_width[105:130, 15:35].flatten()},
-    {'name': 'Large Northern Bar', 'color': colors[6], 'x': np.log10(NII_Halpha[95:115, 140:240].flatten()), 'y': Eq_width[95:110, 140:240].flatten()},
+    {'name': 'Southern Claw', 'color': colors[5], 'x': np.log10(NII_Halpha[105:140, 15:45].flatten()), 'y': Eq_width[105:140, 15:45].flatten()},
+    {'name': 'Large Northern Bar', 'color': colors[6], 'x': np.log10(NII_Halpha[95:115, 140:240].flatten()), 'y': Eq_width[95:115, 140:240].flatten()},
     {'name': 'Shock Front', 'color': colors[7], 'x': np.log10(front_NIIHalpha), 'y': front_eqwHa}
 ]
 binning = 3
