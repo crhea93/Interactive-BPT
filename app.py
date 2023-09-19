@@ -140,7 +140,7 @@ def update_scatter_plot(selected_plots):
         xaxis=dict(title='Log(<i>[NII]</i>/Hα)', tickformat='latex', showgrid=False, zeroline=False),
         yaxis=dict(title='W<sub>Hα</sub> [Å]', tickformat='latex', type='log', showgrid=False, zeroline=False, dtick=1, showexponent= 'all', exponentformat= 'e'),
         xaxis_range=[-1, 1],  # Set your desired x-axis limits
-        yaxis_range=[-1, 3],  # Set your desired y-axis limits
+        yaxis_range=[-1, 4],  # Set your desired y-axis limits
         width=1000,  # Set width to ensure square aspect ratio
         height=800,  # Set height to ensure square aspect ratio
         margin=dict(l=40, r=40, b=40, t=60),  # Adjust plot margins
