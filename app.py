@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.io import fits
 from skimage.measure import profile_line
-import time
+import seaborn as sns
 import numpy.ma as ma
 import matplotlib.pyplot as mpl
 import matplotlib.patches as patches
@@ -34,8 +34,7 @@ data_NII = clean_flux(fits.open('./NGC1275_3_NII6583_mask.fits')[0].data)
 data_SN3_continuum = fits.open('./NGC1275_3_sinc_continuum.fits')[0].data
 
 NII_Halpha = data_NII/data_Halpha
-Eq_width = data_Halpha_flux/data_SN3_continuum
-Eq_width_NII = data_NII/data_SN3_continuum
+Eq_width = data_Halpha_flux/data_SN3_continuum/10
 
 image_paths = ['./NGC1275_lowres_deep.fits', './NGC1275_lowres_3_sinc_Halpha_velocity.fits', './NGC1275_lowres_3_sinc_Halpha_broadening.fits']
 
@@ -67,7 +66,7 @@ region_data = [
 # Initialize the Dash app
 app = dash.Dash(__name__)
 server = app.server
-image_data = fits.open('NGC1275_lowres_deep.fits')[0].data[200:1000, 1000:1600]
+image_data = fits.open('./WIYN-SN3-lowres.fits')[0].data[200:1000, 1000:1600]  # fits.open('NGC1275_lowres_deep.fits')[0].data[200:1000, 1000:1600]
 image_data = np.arcsinh(image_data)
 
 app.layout = html.Div([
@@ -117,7 +116,7 @@ def update_scatter_plot(selected_plots):
             rectangles.append(rect)
     # Convert FITS image data to an image format (e.g., PNG) using matplotlib
     fig, ax = plt.subplots(figsize=(8, 8))
-    ax.imshow(image_data, cmap='magma', origin='lower', vmin=np.nanpercentile(image_data, 5), vmax=np.nanpercentile(image_data, 99.5))  # Display the FITS image data as grayscale
+    ax.imshow(image_data, cmap=sns.color_palette("flare_r", as_cmap=True), origin='lower', vmin=np.nanpercentile(image_data, 75), vmax=np.nanpercentile(image_data, 99))  # Display the FITS image data as grayscale
 
     for rect in rectangles:
         ax.add_patch(rect)
@@ -137,10 +136,14 @@ def update_scatter_plot(selected_plots):
 
     layout = go.Layout(
         title=dict(text="Equivalent Width BPT Map", font=dict(size=30), automargin=True, yref='paper'),
-        xaxis=dict(title='Log(<i>[NII]</i>/Hα)', tickformat='latex', showgrid=False, zeroline=False),
-        yaxis=dict(title='W<sub>Hα</sub> [Å]', tickformat='latex', type='log', showgrid=False, zeroline=False, dtick=1, showexponent= 'all', exponentformat= 'e'),
+        xaxis=dict(title='<b>Log(<i>[NII]</i>/Hα)<b>', tickformat='latex', showgrid=False, zeroline=False, linewidth=1,  # Make the x-axis line thicker
+            titlefont=dict(size=18),  # Bold x-axis label
+            tickfont=dict(size=14)),  # Bold tick values),
+        yaxis=dict(title='<b>W<sub>Hα</sub> [Å]<b>', tickformat='latex', type='log', showgrid=False, zeroline=False,  dtick=1, showexponent= 'all', exponentformat= 'e', linewidth=1,  # Make the x-axis line thicker
+            titlefont=dict(size=18),  # Bold x-axis label
+            tickfont=dict(size=14)),  # Bold tick values),
         xaxis_range=[-1, 1],  # Set your desired x-axis limits
-        yaxis_range=[-1, 4],  # Set your desired y-axis limits
+        yaxis_range=[-1, 3],  # Set your desired y-axis limits
         width=1000,  # Set width to ensure square aspect ratio
         height=800,  # Set height to ensure square aspect ratio
         margin=dict(l=40, r=40, b=40, t=60),  # Adjust plot margins
@@ -153,10 +156,22 @@ def update_scatter_plot(selected_plots):
         ],
         annotations=[
             {'x': -0.8, 'y': 2, 'xref': 'x', 'yref': 'y', 'text': '<b>SF</b>', 'showarrow': False, 'font': {'size': 24}},
-            {'x': 0.3, 'y': 2, 'xref': 'x', 'yref': 'y', 'text': '<b>Seyferts</b>', 'showarrow': False, 'font': {'size': 24}},
-            {'x': 0.3, 'y': 0.25, 'xref': 'x', 'yref': 'y', 'text': '<b>LINERs</b>', 'showarrow': False, 'font': {'size': 24}},
+            {'x': 0.8, 'y': 1, 'xref': 'x', 'yref': 'y', 'text': '<b>Seyferts</b>', 'showarrow': False, 'font': {'size': 24}},
+            {'x': 0.8, 'y': 0.1, 'xref': 'x', 'yref': 'y', 'text': '<b>LINERs</b>', 'showarrow': False, 'font': {'size': 24}},
             #{'x': -0.33, 'y': -0.3, 'xref': 'x', 'yref': 'y', 'text': 'Passive galaxies', 'showarrow': False, 'font': {'size': 15}}
-        ]
+        ],
+        showlegend=True,  # Enable legend
+        legend=dict(
+            x=0.8,  # Set the x position of the legend
+            y=0.9,  # Set the y position of the legend
+            traceorder="normal",  # Maintain the order of traces in the legend
+            title=dict(text="Regions", font=dict(size=16)),  # Bold legend title
+            title_font=dict(size=16),  # Bold legend title font
+            bgcolor='rgba(255, 255, 255, 0.7)',  # Set legend background color
+            bordercolor='black',  # Set legend border color
+            borderwidth=2,  # Set legend border width
+            itemclick='toggle',  # Allow clicking on legend items to toggle traces
+        )
     )
 
     return {'data': data, 'layout': layout}, 'data:image/png;base64,{}'.format(image_data_base64)

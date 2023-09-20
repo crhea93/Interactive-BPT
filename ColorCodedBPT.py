@@ -12,10 +12,10 @@ def clean_flux(data_):
 
 data_Halpha = clean_flux(fits.open('./NGC1275_3_Halpha_mask.fits')[0].data)
 data_NII = clean_flux(fits.open('./NGC1275_3_NII6583_mask.fits')[0].data)
-data_SN3_continuum = fits.open('./NGC1275_3_continuum_mask.fits')[0].data
+data_SN3_continuum = fits.open('./NGC1275_3_sinc_continuum.fits')[0].data
 
 NII_Halpha = np.log10(data_NII/data_Halpha)
-Eq_width = (data_Halpha/data_SN3_continuum)
+Eq_width = (data_Halpha/data_SN3_continuum)/10
 
 Seyferts = []
 Liners = []
@@ -49,7 +49,7 @@ plt.scatter([val[0] for val in Seyferts], [val[1] for val in Seyferts], color='C
 plt.scatter([val[0] for val in Liners], [val[1] for val in Liners], color='C1', alpha=0.3, label='LINERs')
 plt.scatter([val[0] for val in SF], [val[1] for val in SF], color='C2', alpha=0.3, label='Star-Forming')
 #plt.legend()
-plt.vlines(-0.4, 0.1, 1000, color = 'white', linewidth = 1)
+plt.vlines(-0.4, 0.1, 10000, color = 'white', linewidth = 1)
 plt.hlines(6, -0.4, 1.5, color = 'white', linewidth = 1)
 plt.hlines(0.5, -1, 1.5, linestyle = 'dashed', color = 'white', linewidth = 1)
 x_graph = np.linspace(-1, 1, 100 )
@@ -64,7 +64,7 @@ plt.ylabel('W$_{H\\alpha} [\\AA]$', fontsize = 13, weight = 'bold')
 plt.xlabel('Log([NII]/H$\\alpha)$', fontsize = 13, weight = 'bold')
 
 plt.yscale('log')
-plt.ylim(.1, 1000)
+plt.ylim(.1, 10000)
 plt.xlim(-1, 1.5)
 plt.savefig('ColorCodedBPT.png')
 plt.clf()
